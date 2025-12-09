@@ -13,8 +13,30 @@ dotenv.config();
 const app = express();
 
 // CORS Configuration
+const allowedOrigins = [
+  process.env.FRONTEND_URL,
+  'http://localhost:3000',
+  'http://localhost:5173', // Vite default port
+].filter(Boolean); // Remove undefined values
+
 const corsOptions = {
-  origin: process.env.FRONTEND_URL || 'http://localhost:3000',
+  origin: function (origin, callback) {
+    // Allow requests with no origin (mobile apps, Postman, etc.)
+    if (!origin) return callback(null, true);
+    
+    // Allow requests from allowed origins
+    if (allowedOrigins.includes(origin) || allowedOrigins.length === 0) {
+      callback(null, true);
+    } else {
+      // In production, log but allow (for debugging)
+      if (process.env.NODE_ENV === 'production') {
+        console.log('CORS: Allowing origin:', origin);
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    }
+  },
   credentials: true,
   optionsSuccessStatus: 200,
 };
@@ -22,6 +44,9 @@ const corsOptions = {
 // Middleware
 app.use(cors(corsOptions));
 app.use(express.json());
+
+// Log CORS configuration
+console.log('CORS allowed origins:', allowedOrigins.length > 0 ? allowedOrigins : 'All (production mode)');
 
 // Connect to MongoDB
 connectDB();
