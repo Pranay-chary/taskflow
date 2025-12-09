@@ -12,32 +12,12 @@ dotenv.config();
 
 const app = express();
 
-// CORS Configuration
-const allowedOrigins = [
-  process.env.FRONTEND_URL,
-  'http://localhost:3000',
-  'http://localhost:5173', // Vite default port
-].filter(Boolean); // Remove undefined values
-
+// CORS Configuration - Allow all origins for now (can restrict later)
 const corsOptions = {
-  origin: function (origin, callback) {
-    // Allow requests with no origin (mobile apps, Postman, etc.)
-    if (!origin) return callback(null, true);
-    
-    // Allow requests from allowed origins
-    if (allowedOrigins.includes(origin) || allowedOrigins.length === 0) {
-      callback(null, true);
-    } else {
-      // In production, log but allow (for debugging)
-      if (process.env.NODE_ENV === 'production') {
-        console.log('CORS: Allowing origin:', origin);
-        callback(null, true);
-      } else {
-        callback(new Error('Not allowed by CORS'));
-      }
-    }
-  },
-  credentials: true,
+  origin: '*', // Allow all origins
+  credentials: false, // Set to false when using *
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
   optionsSuccessStatus: 200,
 };
 
@@ -45,8 +25,12 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(express.json());
 
-// Log CORS configuration
-console.log('CORS allowed origins:', allowedOrigins.length > 0 ? allowedOrigins : 'All (production mode)');
+// Request logging middleware
+app.use((req, res, next) => {
+  console.log(`${new Date().toISOString()} - ${req.method} ${req.path}`);
+  console.log('Origin:', req.headers.origin);
+  next();
+});
 
 // Connect to MongoDB
 connectDB();
@@ -69,7 +53,20 @@ setInterval(async () => {
 
 // Health check
 app.get('/api/health', (req, res) => {
-  res.status(200).json({ message: 'Server is running' });
+  res.status(200).json({ 
+    message: 'Server is running',
+    timestamp: new Date().toISOString(),
+    environment: process.env.NODE_ENV || 'development'
+  });
+});
+
+// Test endpoint to verify CORS
+app.get('/api/test', (req, res) => {
+  res.status(200).json({ 
+    message: 'CORS is working!',
+    origin: req.headers.origin,
+    timestamp: new Date().toISOString()
+  });
 });
 
 // Error handling middleware
