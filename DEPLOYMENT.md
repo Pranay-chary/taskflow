@@ -40,7 +40,7 @@ This guide will help you deploy TaskFlow to production:
 Go to **Environment** tab and add:
 
 ```
-MONGODB_URI=mongodb+srv://abhimongodb_db_user:CPMzfi1JUoApZCVK@cluster0.f2wceie.mongodb.net/?appName=Cluster0
+MONGODB_URI=mongodb+srv://admin:ROECU2bMCo02ctFg@cluster0.1fkqgiz.mongodb.net/?appName=Cluster0
 PORT=10000
 NODE_ENV=production
 FRONTEND_URL=https://your-vercel-app.vercel.app

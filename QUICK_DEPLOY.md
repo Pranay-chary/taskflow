@@ -26,7 +26,7 @@ Follow these steps in order to deploy TaskFlow:
 ### Step 2: Set Environment Variables
 Add these in Render's Environment tab:
 ```
-MONGODB_URI=your_mongodb_connection_string
+MONGODB_URI=mongodb+srv://admin:ROECU2bMCo02ctFg@cluster0.1fkqgiz.mongodb.net/?appName=Cluster0
 PORT=10000
 NODE_ENV=production
 FRONTEND_URL=https://placeholder.vercel.app

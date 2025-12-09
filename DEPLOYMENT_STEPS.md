@@ -50,7 +50,7 @@ Fill in the following settings:
 Before deploying, click **"Advanced"** → **"Add Environment Variable"** and add:
 
 ```
-MONGODB_URI=mongodb+srv://abhimongodb_db_user:CPMzfi1JUoApZCVK@cluster0.f2wceie.mongodb.net/?appName=Cluster0
+MONGODB_URI=mongodb+srv://admin:ROECU2bMCo02ctFg@cluster0.1fkqgiz.mongodb.net/?appName=Cluster0
 ```
 
 ```
