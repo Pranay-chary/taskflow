@@ -4,14 +4,12 @@ const TaskCard = ({ task, onEdit, onDelete, onStatusChange, isUserView = false }
   const formatDate = (date) => {
     if (!date) return 'No Deadline';
     
-    // Forces Indian Standard Time (IST) with 24-hour format
-    return new Date(date).toLocaleString('en-IN', {
-      timeZone: 'Asia/Kolkata', // <--- CRITICAL: Forces IST calculation
+    // Format date only (no time)
+    return new Date(date).toLocaleDateString('en-IN', {
+      timeZone: 'Asia/Kolkata',
       year: 'numeric',
       month: 'short',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
+      day: 'numeric'
     });
   };
 

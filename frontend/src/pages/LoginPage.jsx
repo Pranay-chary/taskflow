@@ -95,7 +95,7 @@ const LoginPage = () => {
               disabled={loading}
               className="w-full bg-blue-600 text-white font-semibold py-2 rounded-lg hover:bg-blue-700 transition disabled:bg-gray-400"
             >
-              {loading ? (import.meta.env.PROD ? 'Waking up server...' : 'Logging in...') : 'Login'}
+              {loading ? (import.meta.env.PROD ? 'Logging in...' : 'Logging in...') : 'Login'}
             </button>
           </form>
         ) : (

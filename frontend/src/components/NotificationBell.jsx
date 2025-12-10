@@ -142,7 +142,11 @@ const NotificationBell = ({ userId }) => {
                       <div className="flex-1">
                         <p className="text-sm font-medium text-gray-800">{notification.message}</p>
                         <p className="text-xs text-gray-500 mt-1">
-                          {new Date(notification.sentAt).toLocaleString()}
+                          {new Date(notification.sentAt).toLocaleDateString('en-IN', {
+                            year: 'numeric',
+                            month: 'short',
+                            day: 'numeric'
+                          })}
                         </p>
                       </div>
                     </div>

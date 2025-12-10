@@ -18,13 +18,12 @@ const TaskForm = ({ onSubmit, initialData, users }) => {
     }
   }, [initialData]);
 
-  // CORRECT WAY: Format Date for Input (keeps local time)
+  // Format Date for Input (date only, no time)
   const formatDateForInput = (dateString) => {
     if (!dateString) return '';
     const date = new Date(dateString);
     
-    // This manually builds the string using local system time (IST)
-    // format: YYYY-MM-DDTHH:mm
+    // Format: YYYY-MM-DD (date only)
     const pad = (num) => num.toString().padStart(2, '0');
     
     return (
@@ -32,11 +31,7 @@ const TaskForm = ({ onSubmit, initialData, users }) => {
       '-' +
       pad(date.getMonth() + 1) +
       '-' +
-      pad(date.getDate()) +
-      'T' +
-      pad(date.getHours()) + // Uses local hour (22) instead of UTC (16)
-      ':' +
-      pad(date.getMinutes())
+      pad(date.getDate())
     );
   };
 
@@ -98,12 +93,11 @@ const TaskForm = ({ onSubmit, initialData, users }) => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
           <div>
             <label className="block text-gray-700 text-sm font-bold mb-2">
-              Deadline (Date & Time)
+              Deadline (Date)
             </label>
             <input
-              type="datetime-local"
+              type="date"
               name="deadline"
-              // USE THE HELPER FUNCTION HERE
               value={formatDateForInput(formData.deadline)}
               onChange={handleChange}
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
