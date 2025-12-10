@@ -31,20 +31,22 @@ export const API_BASE_URL = getApiBaseUrl();
       currentUrl: window.location.href,
     });
     
-    // Test API connection on load (with timeout)
+    // Test API connection on load (with longer timeout for production)
     const testUrl = API_BASE_URL.includes('/api') 
-      ? API_BASE_URL.replace('/api', '') + '/api/test'
-      : API_BASE_URL + '/test';
+      ? API_BASE_URL.replace('/api', '') + '/api/health'
+      : API_BASE_URL + '/health';
+    
+    const timeout = import.meta.env.PROD ? 10000 : 5000; // 10s for production, 5s for dev
     
     fetch(testUrl, { 
       method: 'GET',
-      signal: AbortSignal.timeout(5000) // 5 second timeout
+      signal: AbortSignal.timeout(timeout)
     })
       .then(res => res.json())
       .then(data => console.log('✅ Backend connection test:', data))
       .catch(err => {
         if (err.name === 'TimeoutError') {
-          console.warn('⚠️ Backend connection test timed out - backend may be starting up');
+          console.warn('⚠️ Backend connection test timed out - backend may be starting up (this is normal on Render free tier)');
         } else {
           console.warn('⚠️ Backend connection test failed:', err.message);
         }

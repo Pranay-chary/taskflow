@@ -1,10 +1,15 @@
 import axios from 'axios';
 import { API_BASE_URL } from '../config/api.js';
 
+// Detect if we're in production (deployed)
+const isProduction = import.meta.env.PROD;
+// Render free tier can take 30-60 seconds to wake up from sleep
+const TIMEOUT = isProduction ? 60000 : 15000; // 60 seconds for production, 15 for dev
+
 // Configure axios with timeout and default settings for better performance
 const axiosInstance = axios.create({
   baseURL: API_BASE_URL,
-  timeout: 15000, // 15 seconds timeout
+  timeout: TIMEOUT,
   headers: {
     'Content-Type': 'application/json',
   },
