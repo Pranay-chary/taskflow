@@ -22,19 +22,32 @@ const getApiBaseUrl = () => {
 
 export const API_BASE_URL = getApiBaseUrl();
 
-// Log API configuration for debugging
-if (typeof window !== 'undefined') {
-  console.log('🌐 API Configuration:', {
-    isProduction: import.meta.env.PROD,
-    apiBaseUrl: API_BASE_URL,
-    viteApiUrl: import.meta.env.VITE_API_URL || 'NOT SET',
-    currentUrl: window.location.href,
-  });
-  
-  // Test API connection on load
-  fetch(`${API_BASE_URL.replace('/api', '')}/api/test`)
-    .then(res => res.json())
-    .then(data => console.log('✅ Backend connection test:', data))
-    .catch(err => console.error('❌ Backend connection failed:', err.message));
-}
+  // Log API configuration for debugging
+  if (typeof window !== 'undefined') {
+    console.log('🌐 API Configuration:', {
+      isProduction: import.meta.env.PROD,
+      apiBaseUrl: API_BASE_URL,
+      viteApiUrl: import.meta.env.VITE_API_URL || 'NOT SET',
+      currentUrl: window.location.href,
+    });
+    
+    // Test API connection on load (with timeout)
+    const testUrl = API_BASE_URL.includes('/api') 
+      ? API_BASE_URL.replace('/api', '') + '/api/test'
+      : API_BASE_URL + '/test';
+    
+    fetch(testUrl, { 
+      method: 'GET',
+      signal: AbortSignal.timeout(5000) // 5 second timeout
+    })
+      .then(res => res.json())
+      .then(data => console.log('✅ Backend connection test:', data))
+      .catch(err => {
+        if (err.name === 'TimeoutError') {
+          console.warn('⚠️ Backend connection test timed out - backend may be starting up');
+        } else {
+          console.warn('⚠️ Backend connection test failed:', err.message);
+        }
+      });
+  }
 
