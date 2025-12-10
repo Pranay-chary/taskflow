@@ -1,5 +1,4 @@
-import axios from 'axios';
-import { API_BASE_URL } from '../config/api.js';
+import axiosInstance from './axiosConfig.js';
 
 const notificationApi = {
   /**
@@ -7,7 +6,7 @@ const notificationApi = {
    */
   getNotifications: async (userId) => {
     try {
-      const response = await axios.get(`${API_BASE_URL}/notifications?userId=${userId}`);
+      const response = await axiosInstance.get(`/notifications?userId=${userId}`);
       return response.data;
     } catch (error) {
       throw error.response?.data || { message: 'Failed to fetch notifications' };
@@ -19,7 +18,7 @@ const notificationApi = {
    */
   getUnreadNotifications: async (userId) => {
     try {
-      const response = await axios.get(`${API_BASE_URL}/notifications/unread?userId=${userId}`);
+      const response = await axiosInstance.get(`/notifications/unread?userId=${userId}`);
       return response.data;
     } catch (error) {
       throw error.response?.data || { message: 'Failed to fetch unread notifications' };
@@ -31,7 +30,7 @@ const notificationApi = {
    */
   getUnreadCount: async (userId) => {
     try {
-      const response = await axios.get(`${API_BASE_URL}/notifications/unread/count?userId=${userId}`);
+      const response = await axiosInstance.get(`/notifications/unread/count?userId=${userId}`);
       return response.data;
     } catch (error) {
       throw error.response?.data || { message: 'Failed to fetch unread count' };
@@ -43,7 +42,7 @@ const notificationApi = {
    */
   markAsRead: async (notificationId) => {
     try {
-      const response = await axios.put(`${API_BASE_URL}/notifications/${notificationId}/read`);
+      const response = await axiosInstance.put(`/notifications/${notificationId}/read`);
       return response.data;
     } catch (error) {
       throw error.response?.data || { message: 'Failed to mark as read' };
@@ -55,7 +54,7 @@ const notificationApi = {
    */
   markAllAsRead: async (userId) => {
     try {
-      const response = await axios.put(`${API_BASE_URL}/notifications/read-all`, { userId });
+      const response = await axiosInstance.put('/notifications/read-all', { userId });
       return response.data;
     } catch (error) {
       throw error.response?.data || { message: 'Failed to mark all as read' };
@@ -67,7 +66,7 @@ const notificationApi = {
    */
   deleteNotification: async (notificationId) => {
     try {
-      const response = await axios.delete(`${API_BASE_URL}/notifications/${notificationId}`);
+      const response = await axiosInstance.delete(`/notifications/${notificationId}`);
       return response.data;
     } catch (error) {
       throw error.response?.data || { message: 'Failed to delete notification' };
@@ -79,7 +78,7 @@ const notificationApi = {
    */
   checkOverdueTasks: async () => {
     try {
-      const response = await axios.post(`${API_BASE_URL}/notifications/check/overdue`);
+      const response = await axiosInstance.post('/notifications/check/overdue');
       return response.data;
     } catch (error) {
       throw error.response?.data || { message: 'Failed to check overdue tasks' };
@@ -91,7 +90,7 @@ const notificationApi = {
    */
   checkApproachingDeadlines: async (hours = 24) => {
     try {
-      const response = await axios.post(`${API_BASE_URL}/notifications/check/approaching?hours=${hours}`);
+      const response = await axiosInstance.post(`/notifications/check/approaching?hours=${hours}`);
       return response.data;
     } catch (error) {
       throw error.response?.data || { message: 'Failed to check approaching deadlines' };

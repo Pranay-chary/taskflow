@@ -27,7 +27,13 @@ const connectDB = async () => {
     console.log('Connection string:', connectionString.substring(0, 30) + '...');
     
     await mongoose.connect(connectionString, {
-      serverSelectionTimeoutMS: 5000, // Timeout after 5s instead of 30s
+      serverSelectionTimeoutMS: 10000, // Increased timeout for production
+      socketTimeoutMS: 45000, // Socket timeout
+      maxPoolSize: 10, // Maintain up to 10 socket connections
+      minPoolSize: 2, // Maintain at least 2 socket connections
+      maxIdleTimeMS: 30000, // Close connections after 30 seconds of inactivity
+      bufferMaxEntries: 0, // Disable mongoose buffering
+      bufferCommands: false, // Disable mongoose buffering
     });
     
     console.log('✅ MongoDB connected successfully');

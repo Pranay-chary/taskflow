@@ -10,7 +10,10 @@ export const login = async (req, res) => {
       return res.status(400).json({ message: 'Email and password are required' });
     }
 
-    let user = await User.findOne({ email: email.toLowerCase() });
+    // Optimize query: only fetch needed fields for faster response
+    let user = await User.findOne({ email: email.toLowerCase() })
+      .select('_id name email role password')
+      .lean(); // Use lean() for faster queries when we don't need mongoose document methods
 
     if (!user) {
       console.log('User not found:', email);
@@ -49,8 +52,10 @@ export const signup = async (req, res) => {
       return res.status(400).json({ message: 'All fields are required' });
     }
 
-    // Check if user already exists
-    const existingUser = await User.findOne({ email: email.toLowerCase() });
+    // Check if user already exists - optimized query
+    const existingUser = await User.findOne({ email: email.toLowerCase() })
+      .select('_id')
+      .lean();
     if (existingUser) {
       console.log('Email already registered:', email);
       return res.status(400).json({ message: 'Email already registered' });

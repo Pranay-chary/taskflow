@@ -1,13 +1,11 @@
-import axios from 'axios';
-import { API_BASE_URL } from '../config/api.js';
+import axiosInstance from './axiosConfig.js';
 
 const authApi = {
   login: async (email, password) => {
     try {
-      const url = `${API_BASE_URL}/auth/login`;
-      console.log('Login request to:', url);
+      console.log('Login request to:', '/auth/login');
       
-      const response = await axios.post(url, { email, password });
+      const response = await axiosInstance.post('/auth/login', { email, password });
       return response.data;
     } catch (error) {
       console.error('Login error:', error);
@@ -36,10 +34,9 @@ const authApi = {
 
   signup: async (userData) => {
     try {
-      const url = `${API_BASE_URL}/auth/signup`;
-      console.log('Signup request to:', url);
+      console.log('Signup request to:', '/auth/signup');
       
-      const response = await axios.post(url, userData);
+      const response = await axiosInstance.post('/auth/signup', userData);
       return response.data;
     } catch (error) {
       console.error('Signup error:', error);

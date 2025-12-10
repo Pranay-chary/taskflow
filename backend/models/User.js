@@ -11,6 +11,7 @@ const userSchema = new mongoose.Schema(
       required: true,
       unique: true,
       lowercase: true,
+      index: true, // Explicit index for faster lookups
     },
     role: {
       type: String,
@@ -26,6 +27,9 @@ const userSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
+
+// Ensure index is created
+userSchema.index({ email: 1 });
 
 const User = mongoose.model('User', userSchema);
 export default User;
