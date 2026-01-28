@@ -59,10 +59,10 @@ const connectDB = async () => {
       maxIdleTimeMS: 30000, // Close connections after 30 seconds of inactivity
     });
     
-    console.log('✅ MongoDB connected successfully');
+    console.log('MongoDB connected successfully');
     console.log('Database:', mongoose.connection.name);
   } catch (error) {
-    console.error('❌ MongoDB connection error:', error.message);
+    console.error('MongoDB connection error:', error.message);
     console.error('Error details:', error);
     
     if (error.message.includes('ECONNREFUSED')) {
